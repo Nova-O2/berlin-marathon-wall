@@ -27,3 +27,9 @@ scripts/
 
 # Generated exports
 *.docx
+
+# Governance subfolders (private — workspace-internal, not for public repo)
+_planning/
+_reviews/
+_comms/
+MIGRATION_PLAN.md
