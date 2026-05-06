@@ -18,6 +18,20 @@ This repository contains the full dataset, source code, and supplementary materi
 - **Journal:** Scientific Reports
 - **Round:** R1
 
+## Notes — repo state
+
+**Padrão 2 .gitignore ativo desde 2026-04-18** (commit `5a23b6f`). Manuscript/, Makefile, scripts/ permanecem gitignored; SSOT files restored to disk after recovery 2026-05-05 mas off-repo.
+
+**Estado público (GitHub):** notebooks/, figures/, LICENSE, README.md, requirements.txt, .gitignore. SSOT não exposto.
+
+**Open decision (deferred per Aldo, 2026-05-05):** ao chegar na ressubmissão R1, escolher:
+- **Stay Padrão 2:** SSOT continua workspace-only; redline R1 gerado de `_reviews/r1/source/2026-02-21_submitted_canonical.docx` vs novo Pandoc-rendered .docx. Audit via tags `archive/lost-2026-05/*` + branch `recovery/ssot-restored-2026-05-05` + incident report `05-strategy/incidents/2026-05-05_wall_ssot_recovery.md`.
+- **Switch to Padrão 1:** rebase main on `recovery/ssot-restored-2026-05-05` (or cherry-pick), update .gitignore Padrão 1, push. SSOT vira parte da public history. Tag `v1.0-submitted-original` torna-se meaningful.
+
+R1 work prossegue on disk-only SSOT regardless. Decisão será feita quando manuscript revisado estiver pronto pra ressubmissão.
+
+`MIGRATION_PLAN.md` no repo root tem step-by-step Padrão 2 transition plan (originalmente escrito 2026-04-08 no commit perdido `c318f93`, recuperado 2026-05-05). Útil como referência; partially obsoleto (Padrão 2 .gitignore já ativo; só "tag v1.0-submitted-original" + Zenodo confirmation steps remain).
+
 ---
 
 ##  1. Data Availability
