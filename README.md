@@ -4,6 +4,22 @@ This repository contains the full dataset, source code, and supplementary materi
 
 ---
 
+## Status
+
+- **Status:** 🔥
+- **Próximo passo:** Phase 11.2 triage qui 07/05 09-11h (Aldo anota `Aldo decision:` em 14 comments)
+- **Trigger:** Calendar event Phase 11.2 ad4ds2k63fh60eqgrl4m5hv3jg
+- **Updated:** 2026-05-06
+- **OKR:** 3.2
+
+### Pesquisa
+- **Phase:** 11.2 (R1 triage)
+- **Submission ID:** abcd56f1-e286-4e03-9844-d3734e705384
+- **Journal:** Scientific Reports
+- **Round:** R1
+
+---
+
 ##  1. Data Availability
 
 Due to GitHub's file size limitations, the full datasets are hosted externally.
