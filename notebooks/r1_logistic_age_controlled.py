@@ -69,7 +69,8 @@ if __name__ == "__main__":
     save_results(res_full, "logistic_full")
 
     # Dedup subset (from Task 3)
-    dedup_path = RESULTS_DIR / "dedup_subset.parquet"
+    from _r1_common import DEDUP_SUBSET_PATH
+    dedup_path = DEDUP_SUBSET_PATH
     if dedup_path.exists():
         df_dedup = pd.read_parquet(dedup_path)
         res_dedup = fit_logistic(df_dedup, "Dedup")

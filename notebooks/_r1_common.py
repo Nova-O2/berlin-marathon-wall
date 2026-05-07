@@ -15,6 +15,7 @@ import pandas as pd
 import numpy as np
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "wall_baseline_873k.parquet"
+DEDUP_SUBSET_PATH = Path(__file__).parent.parent / "data" / "dedup_subset.parquet"
 RESULTS_DIR = Path(__file__).parent / "results" / "r1"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 

@@ -5,14 +5,14 @@ deduplicated subset (conservative: typos -> false uniques, but clean from
 false collisions). Re-runs main analyses on subset.
 
 Output:
-- notebooks/results/r1/dedup_subset.parquet -- used by Tasks 4 + 5
+- data/dedup_subset.parquet (gitignored) -- used by Tasks 4 + 5
 - notebooks/results/r1/dedup_sensitivity_table.csv (.md) -- Table S3
 """
 import sys
 import unicodedata
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
-from _r1_common import load_data, save_results, RESULTS_DIR
+from _r1_common import load_data, save_results, DEDUP_SUBSET_PATH
 
 import pandas as pd
 import numpy as np
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     print(f"Empty normalized names (likely typo / null): {blank_keys}")
 
     # Save subset
-    out_subset = RESULTS_DIR / "dedup_subset.parquet"
+    out_subset = DEDUP_SUBSET_PATH
     dedup.to_parquet(out_subset, engine="pyarrow")
     print(f"Saved dedup subset: {out_subset}")
 

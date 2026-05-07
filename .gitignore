@@ -33,3 +33,4 @@ _planning/
 _reviews/
 _comms/
 MIGRATION_PLAN.md
+notebooks/results/r1/*.parquet
