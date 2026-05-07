@@ -83,7 +83,9 @@ if __name__ == "__main__":
     # COVID 2020 marker (race cancelled — no data point)
     ax.axvspan(2019.5, 2020.5, color="lightgrey", alpha=0.45, zorder=0)
     ymax = max(pivot["Male"].max(), pivot["Female"].max())
-    ax.text(2020, ymax * 1.02, "2020 cancelled\n(COVID-19)",
+    # Place label near the x-axis to avoid overlap with the legend (top-right)
+    ymin = min(pivot["Male"].min(), pivot["Female"].min())
+    ax.text(2020, ymin * 0.55, "2020 cancelled\n(COVID-19)",
             ha="center", va="bottom", fontsize=8.5, style="italic", color="dimgrey")
 
     # Mann-Kendall + LR statistics annotation (top-left)
