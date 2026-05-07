@@ -4,17 +4,19 @@
 
 ## Status
 
-- **Status:** 🔥
-- **Próximo passo:** Phase 11.3 (plan execution) + Phase 11.4 kickoff (analysis) — seg 11/05 09-13h
-- **Trigger:** Calendar event Phase 11.3+11.4 kil3opopssd6i404bi5u8r7fa0
+- **Status:** 🚧
+- **Próximo passo:** Aguardando Beat reviewer + ressubmeter via SNAPP (Phase 11.10)
+- **Trigger:** Beat reply / SNAPP submission confirmation. Passive checkpoint suggested 14/05 if no response.
+- **Aguardando:** Beat Knechtle (corresponding author) — bundle handoff sent 2026-05-07
 - **Updated:** 2026-05-07
 - **OKR:** 3.2
 
 ### Pesquisa
-- **Phase:** 11.3 (R1 plan; 11.2 triage ✅ 2026-05-07: 13 ✅ apply + 1 💬 modify)
+- **Phase:** 11.9 ✅ (Beat handoff sent 2026-05-07); next Phase 11.10 pending Beat
 - **Submission ID:** abcd56f1-e286-4e03-9844-d3734e705384
 - **Journal:** Scientific Reports
-- **Round:** R1
+- **Round:** R1 (resubmitted)
+- **R1 work summary:** 14/14 reviewer comments addressed; 5 new analyses + 2 new figures + 5 supplementary tables; 7 audit rounds (4 code + 3 bundle) → ZERO ISSUES; 34 findings caught and resolved before handoff. Bundle: `manuscript/exports/Berlin_Wall_R1_bundle.zip` (1.1 MB, 15 files).
 
 ## Authors
 
