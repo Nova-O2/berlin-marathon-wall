@@ -94,7 +94,7 @@ def load_data(filter_age: bool = False) -> pd.DataFrame:
         if col in df.columns:
             df[f"{col}_sec"] = df[col].apply(parse_time_string)
     df["net_time_sec"] = df["time_seconds"]
-    df["half_sec"] = df["half_sec"]  # already from parse loop above
+    # half_sec was already created by the parse loop above; no further work needed
 
     # Pacing metrics — first/second half split
     # Mask invalid half_sec (NaN or 0 — DNS/DNF transponder issues)

@@ -51,23 +51,28 @@ def compute_metrics(df: pd.DataFrame) -> pd.DataFrame:
     paces = out[pace_cols]
     out["cv_pace"] = paces.std(axis=1) / paces.mean(axis=1)
 
-    # Metric 2: Inflection point (first segment with sustained >5% drop vs pre-half mean)
-    # Vectorized: compute exceed mask, find first run of 2 consecutive Trues from i=4 onward
+    # Metric 2: Inflection point — first 5km segment for which pace exceeded the
+    # pre-half-marathon mean by >5% AND remained slower thereafter (i.e., for ALL
+    # subsequent segments through the finish). This matches the strict criterion
+    # described in Methods. Updated 2026-05-07 (audit-F-005) from the prior
+    # 2-consecutive-segments relaxation to fully match the manuscript wording.
     pre_half_cols = pace_cols[:4]  # 0-5, 5-10, 10-15, 15-20 (pre-half)
     pre_half_mean = out[pre_half_cols].mean(axis=1).values
     threshold = pre_half_mean * 1.05
 
     paces_arr_inf = out[pace_cols].values  # (n, 9)
     exceed = paces_arr_inf > threshold[:, None]  # (n, 9) bool
-    # Sustained: exceed[i] AND exceed[i+1], for i in {4,5,6,7} (segments 20-25..35-40)
     n_runners = paces_arr_inf.shape[0]
     inflection_arr = np.full(n_runners, np.nan)
-    # Iterate over the small set of candidate i values, vectorized over runners
-    for i in range(4, len(pace_cols) - 1):
-        sustained = exceed[:, i] & exceed[:, i + 1]
-        # Only assign where not yet set (np.nan) and condition holds
+    # Strict criterion: from candidate i in {4,5,6,7,8} (segments 20-25..40-end),
+    # the runner has inflection at SPLIT_KMS[i+1] iff exceed[:, i:].all(axis=1).
+    # Iterate i from earliest to latest; first match wins (NaN guard).
+    for i in range(4, len(pace_cols)):
+        sustained = exceed[:, i:].all(axis=1)
         mask = sustained & np.isnan(inflection_arr)
-        inflection_arr[mask] = SPLIT_KMS[i + 1]
+        # Inflection km is the start-of-segment for the i-th segment, which is
+        # SPLIT_KMS[i] (e.g., i=5 → segment 25-30 km → inflection start = 25 km).
+        inflection_arr[mask] = SPLIT_KMS[i]
     out["inflection_km"] = inflection_arr
 
     # Metric 3: Late-race deceleration (% diff pace 35-40 vs pace 5-10)
@@ -125,6 +130,37 @@ if __name__ == "__main__":
     inf_F_v = subset[subset["gender_label"] == "Female"]["inflection_km"].dropna()
     print(f"  Men inflection: median={inf_M_v.median():.1f}, IQR=[{inf_M_v.quantile(0.25):.1f}, {inf_M_v.quantile(0.75):.1f}]")
     print(f"  Women inflection: median={inf_F_v.median():.1f}, IQR=[{inf_F_v.quantile(0.25):.1f}, {inf_F_v.quantile(0.75):.1f}]")
+
+    # Persist inflection distribution to CSV (audit-F-009: every manuscript number traceable to results/*.csv)
+    inflection_dist = pd.DataFrame([
+        {
+            "gender": "Male",
+            "n_total": int(n_M_total),
+            "n_with_inflection": int(len(inf_M_v)),
+            "pct_with_inflection": 100 * len(inf_M_v) / n_M_total,
+            "n_no_inflection": int(n_inf_nan_M),
+            "pct_no_inflection": 100 * n_inf_nan_M / n_M_total,
+            "median_km": inf_M_v.median(),
+            "q25_km": inf_M_v.quantile(0.25),
+            "q75_km": inf_M_v.quantile(0.75),
+            "mean_km": inf_M_v.mean(),
+            "sd_km": inf_M_v.std(),
+        },
+        {
+            "gender": "Female",
+            "n_total": int(n_F_total),
+            "n_with_inflection": int(len(inf_F_v)),
+            "pct_with_inflection": 100 * len(inf_F_v) / n_F_total,
+            "n_no_inflection": int(n_inf_nan_F),
+            "pct_no_inflection": 100 * n_inf_nan_F / n_F_total,
+            "median_km": inf_F_v.median(),
+            "q25_km": inf_F_v.quantile(0.25),
+            "q75_km": inf_F_v.quantile(0.75),
+            "mean_km": inf_F_v.mean(),
+            "sd_km": inf_F_v.std(),
+        },
+    ])
+    save_results(inflection_dist, "inflection_distribution")
 
     metrics = ["cv_pace", "inflection_km", "late_decel_pct", "oscillations", "km30_gradient"]
     rows = []
