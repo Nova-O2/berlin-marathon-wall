@@ -72,9 +72,9 @@ Run notebooks in the order above. Outputs feed each other.
 
 ## Figures
 
-1. **Figure A — Density** (`figures/Figure_1_Density.tiff`) — kernel density estimation of percentage slowdown by gender; visualizes the heavier right tail of male pacing failures
-2. **Figure B — Risk** (`figures/Figure_3_Risk_Plot.tiff`) — bar plot of "hitting the wall" prevalence by gender; OR = 2.00 (95% CI 1.97–2.03)
-3. **Figure C — Stratified** (`figures/Figure_2_Boxplot.tiff`) — mean percentage slowdown by performance category × gender; gender disparity persists across all five tiers
+1. **Figure 1 — Density** (`figures/Figure_1_Density.tiff`) — kernel density estimation of percentage slowdown by gender; visualizes the heavier right tail of male pacing failures
+2. **Figure 2 — Risk** (`figures/Figure_3_Risk_Plot.tiff`) — bar plot of "hitting the wall" prevalence by gender; OR = 2.00 (95% CI 1.97–2.03)
+3. **Figure 3 — Stratified** (`figures/Figure_2_Boxplot.tiff`) — mean percentage slowdown by performance category × gender; gender disparity persists across all five tiers
 
 ## Suggested Reviewers
 

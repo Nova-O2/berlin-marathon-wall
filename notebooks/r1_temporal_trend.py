@@ -5,7 +5,7 @@ over 1999-2025. Mann-Kendall trend + linear regression of gap.
 
 Outputs:
 - notebooks/results/r1/temporal_trend_table.csv (.md)
-- figures/Figure_E_Temporal_Trend.tiff (300 DPI) + .png (150 DPI)
+- figures/Figure_5_Temporal_Trend.tiff (300 DPI, LZW compressed) + .png (150 DPI)
 """
 import sys
 from pathlib import Path
@@ -84,8 +84,20 @@ if __name__ == "__main__":
     ax.spines["right"].set_visible(False)
     plt.tight_layout()
 
-    out_tiff = Path(__file__).parent.parent / "figures" / "Figure_E_Temporal_Trend.tiff"
-    out_png = Path(__file__).parent.parent / "figures" / "Figure_E_Temporal_Trend.png"
-    plt.savefig(out_tiff, dpi=300, bbox_inches="tight")
-    plt.savefig(out_png, dpi=150, bbox_inches="tight")
-    print(f"\nSaved: {out_tiff}, {out_png}")
+    out_tiff = Path(__file__).parent.parent / "figures" / "Figure_5_Temporal_Trend.tiff"
+    out_png = Path(__file__).parent.parent / "figures" / "Figure_5_Temporal_Trend.png"
+    plt.savefig(out_tiff, dpi=300, bbox_inches="tight", facecolor="white")
+    plt.savefig(out_png, dpi=150, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+
+    # LZW compression + RGB conversion (per workspace research-figures rule)
+    from PIL import Image
+    img = Image.open(out_tiff)
+    if img.mode == "RGBA":
+        bg = Image.new("RGB", img.size, "white")
+        bg.paste(img, mask=img.split()[3])
+        img = bg
+    elif img.mode != "RGB":
+        img = img.convert("RGB")
+    img.save(out_tiff, compression="tiff_lzw", dpi=(300, 300))
+    print(f"\nSaved: {out_tiff} ({out_tiff.stat().st_size/1024:.1f} KB), {out_png}")

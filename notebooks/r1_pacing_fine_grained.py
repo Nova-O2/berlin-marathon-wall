@@ -9,7 +9,7 @@ Computes 5 metrics per runner (subset with all valid 5 km splits):
 
 Outputs:
 - notebooks/results/r1/fine_grained_table.csv (.md) — Table 3 / S5
-- figures/Figure_D_Pacing_Variability.tiff (300 DPI) + .png (150 DPI)
+- figures/Figure_4_Pacing_Variability.tiff (300 DPI, LZW compressed) + .png (150 DPI)
 """
 import sys
 from pathlib import Path
@@ -187,20 +187,31 @@ if __name__ == "__main__":
     print(table.to_string(index=False))
     save_results(table, "fine_grained_table")
 
-    # Figure D
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), dpi=300)
+    # Figure 4 (was D): Fine-grained pacing variability
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5), dpi=300, facecolor="white")
 
-    # (a) Violin of CV
+    # (a) Violin of CV — converted to % for clearer scale; clipped to bulk distribution
     ax = axes[0]
-    cv_M = subset[subset["gender_label"] == "Male"]["cv_pace"].dropna()
-    cv_F = subset[subset["gender_label"] == "Female"]["cv_pace"].dropna()
-    parts = ax.violinplot([cv_M, cv_F], positions=[1, 2], widths=0.7, showmedians=True)
+    cv_M_pct = (subset[subset["gender_label"] == "Male"]["cv_pace"].dropna() * 100).values
+    cv_F_pct = (subset[subset["gender_label"] == "Female"]["cv_pace"].dropna() * 100).values
+    # Clip outliers for visualization (preserves distribution body); 99th percentile cutoff
+    cv_clip = np.percentile(np.concatenate([cv_M_pct, cv_F_pct]), 99)
+    cv_M_v = cv_M_pct[cv_M_pct <= cv_clip]
+    cv_F_v = cv_F_pct[cv_F_pct <= cv_clip]
+    parts = ax.violinplot([cv_M_v, cv_F_v], positions=[1, 2], widths=0.8,
+                           showmedians=True, showextrema=False)
     for pc, color in zip(parts["bodies"], [COLOR_MEN, COLOR_WOMEN]):
         pc.set_facecolor(color)
-        pc.set_alpha(0.7)
+        pc.set_edgecolor(color)
+        pc.set_alpha(0.85)
+    # Override default blue median line → black for consistency
+    if "cmedians" in parts:
+        parts["cmedians"].set_color("black")
+        parts["cmedians"].set_linewidth(2)
     ax.set_xticks([1, 2])
-    ax.set_xticklabels([f"Men\n(n={len(cv_M):,})", f"Women\n(n={len(cv_F):,})"])
-    ax.set_ylabel("Coefficient of variation (CV) of pace across 5 km segments")
+    ax.set_xticklabels([f"Men\n(n = {len(cv_M_pct):,})", f"Women\n(n = {len(cv_F_pct):,})"])
+    ax.set_ylabel("Coefficient of variation of pace (%)\nacross 5 km segments")
+    ax.set_ylim(0, cv_clip * 1.05)
     ax.text(0.05, 0.95, "a", transform=ax.transAxes, fontsize=14, fontweight="bold", va="top")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -210,12 +221,15 @@ if __name__ == "__main__":
     inf_M = subset[subset["gender_label"] == "Male"]["inflection_km"].dropna()
     inf_F = subset[subset["gender_label"] == "Female"]["inflection_km"].dropna()
     bp = ax.boxplot([inf_M, inf_F], positions=[1, 2], widths=0.5, patch_artist=True,
-                    medianprops=dict(color="black", linewidth=2))
+                    medianprops=dict(color="black", linewidth=2),
+                    flierprops=dict(marker="o", markersize=2, markerfacecolor="grey",
+                                    markeredgecolor="grey", alpha=0.3))
     for patch, color in zip(bp["boxes"], [COLOR_MEN, COLOR_WOMEN]):
         patch.set_facecolor(color)
-        patch.set_alpha(0.7)
+        patch.set_alpha(0.85)
+        patch.set_edgecolor(color)
     ax.set_xticks([1, 2])
-    ax.set_xticklabels([f"Men\n(n={len(inf_M):,})", f"Women\n(n={len(inf_F):,})"])
+    ax.set_xticklabels([f"Men\n(n = {len(inf_M):,})", f"Women\n(n = {len(inf_F):,})"])
     ax.set_ylabel("Inflection point (km)")
     ax.text(0.05, 0.95, "b", transform=ax.transAxes, fontsize=14, fontweight="bold", va="top")
     ax.spines["top"].set_visible(False)
@@ -223,8 +237,20 @@ if __name__ == "__main__":
 
     plt.tight_layout()
     figures_dir = Path(__file__).parent.parent / "figures"
-    out_tiff = figures_dir / "Figure_D_Pacing_Variability.tiff"
-    out_png = figures_dir / "Figure_D_Pacing_Variability.png"
-    plt.savefig(out_tiff, dpi=300, bbox_inches="tight")
-    plt.savefig(out_png, dpi=150, bbox_inches="tight")
+    out_tiff = figures_dir / "Figure_4_Pacing_Variability.tiff"
+    out_png = figures_dir / "Figure_4_Pacing_Variability.png"
+    plt.savefig(out_tiff, dpi=300, bbox_inches="tight", facecolor="white")
+    plt.savefig(out_png, dpi=150, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+
+    # LZW compression + RGB conversion (per workspace research-figures rule)
+    from PIL import Image
+    img = Image.open(out_tiff)
+    if img.mode == "RGBA":
+        bg = Image.new("RGB", img.size, "white")
+        bg.paste(img, mask=img.split()[3])
+        img = bg
+    elif img.mode != "RGB":
+        img = img.convert("RGB")
+    img.save(out_tiff, compression="tiff_lzw", dpi=(300, 300))
     print(f"\nSaved: {out_tiff}, {out_png}")
