@@ -43,14 +43,23 @@ Raw and processed datasets are hosted externally due to GitHub size limits.
 - **Zenodo deposit:** [10.5281/zenodo.19342683](https://doi.org/10.5281/zenodo.19342683)
 - **Mirror (Google Drive):** [Datasets folder](https://drive.google.com/drive/folders/1Y0EkPjKQy6dtfzkIikwKNX3-B-FI6vfq?usp=drive_link)
 
+### Primary pipeline files
+
 | File | Format | Stage | Description |
 |------|--------|-------|-------------|
-| `Dataset_Berlin_Marathon_1999-2025_original` | CSV | Raw | Web-scraped output (1999–2025) |
-| `Dataset_Berlin_Marathon_1999-2025` | Parquet | Optimized | CSV converted for memory efficiency (Step 1 output) |
-| `Dataset_Berlin_Cleaned_Analysis_Ready` | Parquet | Cleaned | Nulls removed, time strings parsed, outliers filtered (Step 2 output) |
-| `Dataset_Berlin_Features_Engineered` | Parquet | Final | Adds pacing metrics (`pct_slowdown`, `hit_wall`); used by figures (Step 3 output) |
+| `Dataset_Berlin_Marathon_1999-2025_original.csv` | CSV | Raw | Web-scraped output (1999–2025) |
+| `Dataset_Berlin_Marathon_1999-2025.parquet` | Parquet | Optimized | CSV converted for memory efficiency (Step 1 output) |
+| `Dataset_Berlin_Cleaned_Analysis_Ready.parquet` | Parquet | Cleaned | Nulls removed, time strings parsed, outliers filtered (Step 2 output) |
+| `Dataset_Berlin_Features_Engineered.parquet` | Parquet | Final | Adds pacing metrics (`pct_slowdown`, `hit_wall`); used by figures (Step 3 output) |
 
-Place files in `data/` to reproduce.
+### Revision-round derivative files
+
+| File | Format | Description |
+|------|--------|-------------|
+| `wall_baseline_873k.parquet` | Parquet | Analytical cohort (n = 873,334 finishers; raw checkpoints + age_group + gender + year), input to R1 notebooks |
+| `dedup_subset.parquet` | Parquet | Deduplicated subset (n = 700,877; first appearance per composite key of normalized name + age group), produced by `notebooks/r1_dedup_sensitivity.py` and consumed by `r1_logistic_age_controlled.py` |
+
+Place all files in `data/` to reproduce. The `data/` directory is gitignored.
 
 ## Analyses
 
