@@ -188,12 +188,16 @@ if __name__ == "__main__":
     save_results(table, "fine_grained_table")
 
     # Figure 4 (was D): Fine-grained pacing variability
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), dpi=300, facecolor="white")
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5.5), dpi=300, facecolor="white")
 
     # (a) Violin of CV — converted to % for clearer scale; clipped to bulk distribution
     ax = axes[0]
     cv_M_pct = (subset[subset["gender_label"] == "Male"]["cv_pace"].dropna() * 100).values
     cv_F_pct = (subset[subset["gender_label"] == "Female"]["cv_pace"].dropna() * 100).values
+    cv_M_med = float(np.median(cv_M_pct))
+    cv_F_med = float(np.median(cv_F_pct))
+    # Cohen's d for CV (note: per-runner CV — Cohen's d on the unclipped values)
+    d_cv = (cv_M_pct.mean() - cv_F_pct.mean()) / np.sqrt((cv_M_pct.var() + cv_F_pct.var()) / 2)
     # Clip outliers for visualization (preserves distribution body); 99th percentile cutoff
     cv_clip = np.percentile(np.concatenate([cv_M_pct, cv_F_pct]), 99)
     cv_M_v = cv_M_pct[cv_M_pct <= cv_clip]
@@ -204,13 +208,24 @@ if __name__ == "__main__":
         pc.set_facecolor(color)
         pc.set_edgecolor(color)
         pc.set_alpha(0.85)
-    # Override default blue median line → black for consistency
     if "cmedians" in parts:
         parts["cmedians"].set_color("black")
         parts["cmedians"].set_linewidth(2)
+    # Median value labels next to median lines
+    ax.text(1.42, cv_M_med, f"median = {cv_M_med:.2f}%",
+            ha="left", va="center", fontsize=8.5,
+            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=COLOR_MEN, alpha=0.9))
+    ax.text(2.42, cv_F_med, f"median = {cv_F_med:.2f}%",
+            ha="left", va="center", fontsize=8.5,
+            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=COLOR_WOMEN, alpha=0.9))
+    # Cohen's d annotation
+    ax.text(0.97, 0.92, f"Cohen's d = {d_cv:.2f}\n*** p < 0.001",
+            transform=ax.transAxes, fontsize=9, ha="right", va="top",
+            bbox=dict(boxstyle="round,pad=0.35", facecolor="white", edgecolor="grey", alpha=0.9))
     ax.set_xticks([1, 2])
     ax.set_xticklabels([f"Men\n(n = {len(cv_M_pct):,})", f"Women\n(n = {len(cv_F_pct):,})"])
     ax.set_ylabel("Coefficient of variation of pace (%)\nacross 5 km segments")
+    ax.set_xlim(0.4, 3.0)
     ax.set_ylim(0, cv_clip * 1.05)
     ax.text(0.05, 0.95, "a", transform=ax.transAxes, fontsize=14, fontweight="bold", va="top")
     ax.spines["top"].set_visible(False)
@@ -220,6 +235,9 @@ if __name__ == "__main__":
     ax = axes[1]
     inf_M = subset[subset["gender_label"] == "Male"]["inflection_km"].dropna()
     inf_F = subset[subset["gender_label"] == "Female"]["inflection_km"].dropna()
+    inf_M_med = float(inf_M.median())
+    inf_F_med = float(inf_F.median())
+    d_inf = (inf_M.mean() - inf_F.mean()) / np.sqrt((inf_M.var() + inf_F.var()) / 2)
     bp = ax.boxplot([inf_M, inf_F], positions=[1, 2], widths=0.5, patch_artist=True,
                     medianprops=dict(color="black", linewidth=2),
                     flierprops=dict(marker="o", markersize=2, markerfacecolor="grey",
@@ -228,8 +246,20 @@ if __name__ == "__main__":
         patch.set_facecolor(color)
         patch.set_alpha(0.85)
         patch.set_edgecolor(color)
+    # Median value labels
+    ax.text(1.32, inf_M_med, f"median = {inf_M_med:.0f} km",
+            ha="left", va="center", fontsize=8.5,
+            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=COLOR_MEN, alpha=0.9))
+    ax.text(2.32, inf_F_med, f"median = {inf_F_med:.0f} km",
+            ha="left", va="center", fontsize=8.5,
+            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=COLOR_WOMEN, alpha=0.9))
+    # Cohen's d annotation
+    ax.text(0.97, 0.92, f"Cohen's d = {d_inf:.2f}\n*** p < 0.001",
+            transform=ax.transAxes, fontsize=9, ha="right", va="top",
+            bbox=dict(boxstyle="round,pad=0.35", facecolor="white", edgecolor="grey", alpha=0.9))
     ax.set_xticks([1, 2])
     ax.set_xticklabels([f"Men\n(n = {len(inf_M):,})", f"Women\n(n = {len(inf_F):,})"])
+    ax.set_xlim(0.4, 2.8)
     ax.set_ylabel("Inflection point (km)")
     ax.text(0.05, 0.95, "b", transform=ax.transAxes, fontsize=14, fontweight="bold", va="top")
     ax.spines["top"].set_visible(False)

@@ -64,21 +64,44 @@ if __name__ == "__main__":
     out["lr_R2"] = r ** 2
     save_results(out, "temporal_trend_table")
 
-    # Figure E
+    # Figure 5 (was E): Temporal trend with COVID marker + MK stats
     n_men_avg = annual.query("gender_label == 'Male'")["n"].mean()
     n_women_avg = annual.query("gender_label == 'Female'")["n"].mean()
 
-    fig, ax = plt.subplots(figsize=(8, 5), dpi=300)
+    fig, ax = plt.subplots(figsize=(9, 5.5), dpi=300, facecolor="white")
     ax.scatter(pivot["year"], pivot["Male"], color=COLOR_MEN,
-               label=f"Men (mean n/yr ≈ {n_men_avg:,.0f})", alpha=0.7, s=40)
+               label=f"Men (mean n/yr ≈ {n_men_avg:,.0f})", alpha=0.85, s=45,
+               edgecolor="white", linewidth=0.5)
     ax.scatter(pivot["year"], pivot["Female"], color=COLOR_WOMEN,
-               label=f"Women (mean n/yr ≈ {n_women_avg:,.0f})", alpha=0.7, s=40)
+               label=f"Women (mean n/yr ≈ {n_women_avg:,.0f})", alpha=0.85, s=45,
+               edgecolor="white", linewidth=0.5)
     ax.plot(pivot["year"], pivot["Male"].rolling(3, center=True).mean(),
-            color=COLOR_MEN, lw=2, alpha=0.5)
+            color=COLOR_MEN, lw=2.2, alpha=0.55, label="_nolegend_")
     ax.plot(pivot["year"], pivot["Female"].rolling(3, center=True).mean(),
-            color=COLOR_WOMEN, lw=2, alpha=0.5)
+            color=COLOR_WOMEN, lw=2.2, alpha=0.55, label="_nolegend_")
+
+    # COVID 2020 marker (race cancelled — no data point)
+    ax.axvspan(2019.5, 2020.5, color="lightgrey", alpha=0.45, zorder=0)
+    ymax = max(pivot["Male"].max(), pivot["Female"].max())
+    ax.text(2020, ymax * 1.02, "2020 cancelled\n(COVID-19)",
+            ha="center", va="bottom", fontsize=8.5, style="italic", color="dimgrey")
+
+    # Mann-Kendall + LR statistics annotation (top-left)
+    stats_text = (
+        f"Mann-Kendall trend (gender gap):\n"
+        f"  τ = {gap_mk['tau']:.2f},  p = {gap_mk['p']:.2f}\n"
+        f"Linear regression (slope of gap):\n"
+        f"  +{slope:.2f} pp/year  (95% CI ±{1.96*se:.2f})\n"
+        f"  R² = {r**2:.2f},  p = {p:.2f}"
+    )
+    ax.text(0.02, 0.97, stats_text,
+            transform=ax.transAxes, fontsize=8.5, ha="left", va="top",
+            family="monospace",
+            bbox=dict(boxstyle="round,pad=0.4", facecolor="white", edgecolor="grey", alpha=0.92))
+
     ax.set_xlabel("Year")
     ax.set_ylabel('Prevalence of "hitting the wall" (%)')
+    ax.set_ylim(0, ymax * 1.15)
     ax.legend(frameon=False, loc="upper right")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)

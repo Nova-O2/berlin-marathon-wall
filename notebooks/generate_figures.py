@@ -45,20 +45,34 @@ def save_with_lzw(fig, basename):
 
 
 def figure_a_density(df):
-    """Density of percentage slowdown by gender."""
+    """Density of percentage slowdown by gender — with wall threshold + means."""
     men = df[df["gender_label"] == "Male"]["percentage_slowdown"].dropna()
     women = df[df["gender_label"] == "Female"]["percentage_slowdown"].dropna()
 
-    fig, ax = plt.subplots(figsize=(8, 5), dpi=300)
+    fig, ax = plt.subplots(figsize=(9, 5.5), dpi=300, facecolor="white")
     bins = np.linspace(-20, 80, 200)
-    ax.hist(men, bins=bins, density=True, color=COLOR_MEN, alpha=0.5,
-            label=f"Men (n = {len(men):,})", edgecolor="none")
-    ax.hist(women, bins=bins, density=True, color=COLOR_WOMEN, alpha=0.5,
-            label=f"Women (n = {len(women):,})", edgecolor="none")
+    ax.hist(men, bins=bins, density=True, color=COLOR_MEN, alpha=0.55,
+            label=f"Men (n = {len(men):,}; mean = {men.mean():.2f}%, SD = {men.std():.2f}%)",
+            edgecolor="none")
+    ax.hist(women, bins=bins, density=True, color=COLOR_WOMEN, alpha=0.55,
+            label=f"Women (n = {len(women):,}; mean = {women.mean():.2f}%, SD = {women.std():.2f}%)",
+            edgecolor="none")
+
+    # Wall threshold (operational definition)
+    ax.axvline(20, color="black", linestyle="--", linewidth=1.5, alpha=0.7)
+    ax.text(20.5, ax.get_ylim()[1] * 0.92 if ax.get_ylim()[1] > 0 else 0.055,
+            '"Hitting the wall"\nthreshold (≥20%)',
+            fontsize=8.5, ha="left", va="top",
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="grey", alpha=0.85))
+
+    # Mean lines per gender (vertical)
+    ax.axvline(men.mean(), color=COLOR_MEN, linestyle="-", linewidth=1.5, alpha=0.9)
+    ax.axvline(women.mean(), color=COLOR_WOMEN, linestyle="-", linewidth=1.5, alpha=0.9)
+
     ax.set_xlim(-20, 80)
     ax.set_xlabel("Percentage slowdown (%)")
     ax.set_ylabel("Density")
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, loc="upper right", fontsize=9)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     plt.tight_layout()
@@ -67,7 +81,7 @@ def figure_a_density(df):
 
 
 def figure_b_prevalence(df):
-    """Bar plot of wall-hit prevalence by gender with Wilson 95% CI."""
+    """Bar plot of wall-hit prevalence by gender with Wilson 95% CI + significance bracket."""
     men = df[df["gender_label"] == "Male"].dropna(subset=["hit_wall"])
     women = df[df["gender_label"] == "Female"].dropna(subset=["hit_wall"])
     n_m, n_w = len(men), len(women)
@@ -78,7 +92,14 @@ def figure_b_prevalence(df):
     ci_m_lo, ci_m_hi = proportion_confint(hit_m, n_m, method="wilson")
     ci_w_lo, ci_w_hi = proportion_confint(hit_w, n_w, method="wilson")
 
-    fig, ax = plt.subplots(figsize=(6, 5), dpi=300)
+    # Crude OR + 95% CI for annotation
+    a, b = hit_m, n_m - hit_m
+    c, d = hit_w, n_w - hit_w
+    or_v = (a * d) / (b * c)
+    se = np.sqrt(1/a + 1/b + 1/c + 1/d)
+    or_lo, or_hi = np.exp(np.log(or_v) - 1.96*se), np.exp(np.log(or_v) + 1.96*se)
+
+    fig, ax = plt.subplots(figsize=(6.5, 6), dpi=300, facecolor="white")
     err_m = [[pct_m - 100 * ci_m_lo], [100 * ci_m_hi - pct_m]]
     err_w = [[pct_w - 100 * ci_w_lo], [100 * ci_w_hi - pct_w]]
     ax.bar([0], [pct_m], yerr=err_m, color=COLOR_MEN, alpha=0.85,
@@ -90,30 +111,60 @@ def figure_b_prevalence(df):
     ax.set_ylabel('Prevalence of "hitting the wall" (%)')
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    # Add value labels above bars
-    ax.text(0, pct_m + 100 * ci_m_hi - pct_m + 0.5, f"{pct_m:.2f}%", ha="center", fontsize=9)
-    ax.text(1, pct_w + 100 * ci_w_hi - pct_w + 0.5, f"{pct_w:.2f}%", ha="center", fontsize=9)
+    # Value labels above bars
+    ax.text(0, pct_m + 1, f"{pct_m:.2f}%", ha="center", fontsize=10, fontweight="bold")
+    ax.text(1, pct_w + 1, f"{pct_w:.2f}%", ha="center", fontsize=10, fontweight="bold")
+
+    # Significance bracket with OR annotation
+    y_max = max(pct_m, pct_w) + 4
+    ax.set_ylim(0, y_max + 4)
+    bracket_y = y_max
+    ax.plot([0, 0, 1, 1], [bracket_y - 0.5, bracket_y, bracket_y, bracket_y - 0.5],
+            color="black", linewidth=1.2)
+    ax.text(0.5, bracket_y + 0.4,
+            f"OR = {or_v:.2f} (95% CI {or_lo:.2f}–{or_hi:.2f})\n*** p < 0.001",
+            ha="center", va="bottom", fontsize=10)
     plt.tight_layout()
     save_with_lzw(fig, "Figure_2_Boxplot")  # legacy filename
     plt.close(fig)
 
 
 def figure_c_stratified(df):
-    """Stratified bar plot: mean slowdown by performance category × gender, with 95% CI."""
-    df = df.dropna(subset=["percentage_slowdown", "performance_category", "gender_label"])
+    """Stratified bar plot: mean slowdown by performance category × gender, 95% CI + prevalence ratios."""
+    df = df.dropna(subset=["percentage_slowdown", "performance_category", "gender_label", "hit_wall"])
+    df["hit_wall"] = df["hit_wall"].astype(int)
 
-    fig, ax = plt.subplots(figsize=(11, 6), dpi=300)
+    fig, ax = plt.subplots(figsize=(12, 6.5), dpi=300, facecolor="white")
     x = np.arange(len(PERF_ORDER))
     width = 0.38
 
+    # Compute everything per category
+    cat_data = {}
+    for cat in PERF_ORDER:
+        m_sub = df[(df["gender_label"] == "Male") & (df["performance_category"] == cat)]
+        w_sub = df[(df["gender_label"] == "Female") & (df["performance_category"] == cat)]
+        m_slow = m_sub["percentage_slowdown"]
+        w_slow = w_sub["percentage_slowdown"]
+        m_wall_pct = 100 * m_sub["hit_wall"].mean() if len(m_sub) > 0 else 0
+        w_wall_pct = 100 * w_sub["hit_wall"].mean() if len(w_sub) > 0 else 0
+        prev_ratio = m_wall_pct / w_wall_pct if w_wall_pct > 0 else float("inf")
+        cat_data[cat] = {
+            "m_mean": m_slow.mean(), "m_sd": m_slow.std(), "m_n": len(m_slow),
+            "w_mean": w_slow.mean(), "w_sd": w_slow.std(), "w_n": len(w_slow),
+            "prev_ratio": prev_ratio,
+        }
+
     for i, gender in enumerate(["Male", "Female"]):
         color = COLOR_MEN if gender == "Male" else COLOR_WOMEN
+        key_mean = "m_mean" if gender == "Male" else "w_mean"
+        key_sd = "m_sd" if gender == "Male" else "w_sd"
+        key_n = "m_n" if gender == "Male" else "w_n"
         means, errs, ns = [], [], []
         for cat in PERF_ORDER:
-            sub = df[(df["gender_label"] == gender) & (df["performance_category"] == cat)]["percentage_slowdown"]
-            n = len(sub)
-            mean = sub.mean()
-            se = sub.std() / np.sqrt(n) if n > 0 else 0
+            mean = cat_data[cat][key_mean]
+            n = cat_data[cat][key_n]
+            sd = cat_data[cat][key_sd]
+            se = sd / np.sqrt(n) if n > 0 else 0
             means.append(mean)
             errs.append(1.96 * se)
             ns.append(n)
@@ -122,7 +173,19 @@ def figure_c_stratified(df):
                capsize=3, label=gender, error_kw={"lw": 1.0})
         # N labels above bars
         for px, m, err, n in zip(pos, means, errs, ns):
-            ax.text(px, m + err + 0.4, f"n={n:,}", ha="center", fontsize=6.5, rotation=0)
+            ax.text(px, m + err + 0.3, f"n={n:,}", ha="center", fontsize=6.5, rotation=0)
+
+    # Prevalence ratio annotations (one per category, centered between the pair)
+    y_max = max(cat_data[cat]["m_mean"] for cat in PERF_ORDER) * 1.15
+    ax.set_ylim(0, y_max + 2)
+    for i, cat in enumerate(PERF_ORDER):
+        ratio = cat_data[cat]["prev_ratio"]
+        # Position above the higher of the two bars in this category
+        higher = max(cat_data[cat]["m_mean"], cat_data[cat]["w_mean"]) + 1.5
+        ax.text(x[i], higher, f"M:F wall-hit\n= {ratio:.2f}×",
+                ha="center", va="bottom", fontsize=8.5, fontweight="bold",
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="lemonchiffon",
+                          edgecolor="grey", alpha=0.9, linewidth=0.8))
 
     ax.set_xticks(x)
     ax.set_xticklabels(PERF_ORDER, rotation=12, ha="right")
