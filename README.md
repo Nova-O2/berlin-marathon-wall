@@ -7,13 +7,13 @@ This repository contains the full dataset, source code, and supplementary materi
 ## Status
 
 - **Status:** 🔥
-- **Próximo passo:** Phase 11.2 triage qui 07/05 09-11h (Aldo anota `Aldo decision:` em 14 comments)
-- **Trigger:** Calendar event Phase 11.2 ad4ds2k63fh60eqgrl4m5hv3jg
-- **Updated:** 2026-05-06
+- **Próximo passo:** Phase 11.3 (plan execution) + Phase 11.4 kickoff (analysis) — seg 11/05 09-13h
+- **Trigger:** Calendar event Phase 11.3+11.4 kil3opopssd6i404bi5u8r7fa0
+- **Updated:** 2026-05-07
 - **OKR:** 3.2
 
 ### Pesquisa
-- **Phase:** 11.2 (R1 triage)
+- **Phase:** 11.3 (R1 plan; 11.2 triage ✅ 2026-05-07: 13 ✅ apply + 1 💬 modify)
 - **Submission ID:** abcd56f1-e286-4e03-9844-d3734e705384
 - **Journal:** Scientific Reports
 - **Round:** R1
