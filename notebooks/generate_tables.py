@@ -159,8 +159,89 @@ def build_tableS5():
     print(f"Wrote: TableS5.md")
 
 
+def build_tableS3():
+    """Dedup sensitivity from dedup_sensitivity_table.csv."""
+    d = pd.read_csv(RESULTS_DIR / "dedup_sensitivity_table.csv")
+    full = d[d["subset"] == "Full"].iloc[0]
+    dedup = d[d["subset"] == "Dedup"].iloc[0]
+
+    def fmt_row(r, label):
+        return (
+            f"| {label} | {int(r['n_total']):,} | {int(r['n_men']):,} | {int(r['n_women']):,} | "
+            f"{r['mean_slow_M_pct']:.2f} | {r['mean_slow_F_pct']:.2f} | "
+            f"{r['wall_pct_M']:.2f} | {r['wall_pct_F']:.2f} | "
+            f"**{r['OR_crude']:.3f}** | ({r['OR_CI_lo']:.2f}, {r['OR_CI_hi']:.2f}) |"
+        )
+
+    reduction_total = -100 * (1 - dedup["n_total"] / full["n_total"])
+    reduction_men = -100 * (1 - dedup["n_men"] / full["n_men"])
+    reduction_women = -100 * (1 - dedup["n_women"] / full["n_women"])
+
+    header = (
+        "**Table S3.** Sensitivity analysis on a deduplicated subset constructed by retaining the first appearance "
+        "per composite key of normalized runner name and age group. The deduplication is conservative — spelling "
+        "variations across editions may leave some entries from the same runner classified as distinct — and is "
+        "therefore treated as a robustness check rather than a definitive correction.\n\n"
+        "| Subset | n total | n men | n women | Mean slowdown M (%) | Mean slowdown F (%) | Wall-hit M (%) | Wall-hit F (%) | Crude OR | 95% CI |\n"
+        "|:---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|"
+    )
+    rows = [
+        fmt_row(full, "Full cohort"),
+        fmt_row(dedup, "Deduplicated subset (first appearance per name + age-group key)"),
+        f"| Reduction from full cohort | {reduction_total:.1f}% | {reduction_men:.1f}% | {reduction_women:.1f}% | — | — | — | — | — | — |",
+    ]
+    footer = (
+        "\n\nThe crude Odds Ratio is virtually unchanged between the full cohort and the deduplicated subset, with "
+        "completely overlapping 95% confidence intervals. Mean percentage slowdown is marginally lower in both gender "
+        "groups in the deduplicated subset, consistent with experienced multi-year finishers exhibiting slightly more "
+        "positive splits than first-time finishers; the gender gap (~2.4 percentage points) is preserved. "
+        "Welch's *t*-test, Mann-Whitney U test, and Chi-square remain significant at *p* < 10⁻³⁰⁰ in both subsets."
+    )
+
+    out = "\n".join([header] + rows) + footer + "\n"
+    (TABLES_DIR / "TableS3.md").write_text(out)
+    print(f"Wrote: TableS3.md")
+
+
+def build_tableS4():
+    """Within-Berlin sex × age_group quintile from quintile_sensitivity.csv."""
+    q = pd.read_csv(RESULTS_DIR / "quintile_sensitivity.csv")
+
+    rows = []
+    for _, r in q.iterrows():
+        rows.append(
+            f"| {r['Quintile']} | {int(r['n_M']):,} | {int(r['n_F']):,} | "
+            f"{r['wall_M_pct']:.1f} | {r['wall_F_pct']:.1f} | "
+            f"{r['slow_M_pct']:.1f} | {r['slow_F_pct']:.1f} | "
+            f"**{r['OR']:.2f}** | ({r['OR_CI_lo']:.2f}, {r['OR_CI_hi']:.2f}) |"
+        )
+
+    header = (
+        "**Table S4.** Within-cohort sex × age-group quintile re-stratification. Each runner is classified into a "
+        "quintile of finish time computed within their (sex, age-group) stratum (Q1 = top 10%, Q2 = 10–25%, Q3 = 25–50%, "
+        "Q4 = 50–75%, Q5 = bottom 25%). Main analyses are re-computed under this percentile-based classification.\n\n"
+        "| Quintile | n_M | n_F | Wall-hit M (%) | Wall-hit F (%) | Mean slowdown M (%) | Mean slowdown F (%) | OR (Male vs Female) | 95% CI |\n"
+        "|:---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|"
+    )
+    footer = (
+        "\n\nThe gender gap is preserved across all five within-stratum competitive quintiles "
+        "(all ORs > 1, all 95% CIs strictly excluding 1), indicating that the disparity is not an artifact of "
+        "differential demographic composition between absolute-time performance categories. The non-monotonic OR "
+        "pattern (peaking in Q2, \"competitive but not at the very top\") suggests that male over-representation in "
+        "wall events is most pronounced just below the elite tier, and slightly attenuated at the very top (Q1) where "
+        "competitive selection is more stringent. Wall-hit prevalence rises monotonically with quintile in both sexes, "
+        "consistent with the absolute-time stratification reported in Table 2."
+    )
+
+    out = "\n".join([header] + rows) + footer + "\n"
+    (TABLES_DIR / "TableS4.md").write_text(out)
+    print(f"Wrote: TableS4.md")
+
+
 if __name__ == "__main__":
     df = load_data()
     print(f"Loaded baseline n={len(df):,}")
     build_table2(df)
+    build_tableS3()
+    build_tableS4()
     build_tableS5()
