@@ -28,5 +28,6 @@ scripts/
 
 # Working folders
 _*/
+bundles/
 *.tmp
 notebooks/results/**/*.parquet
