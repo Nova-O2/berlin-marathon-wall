@@ -1,0 +1,13 @@
+# Pinned to the environment that reproduces the published results
+# (Scientific Reports 2026, DOI 10.1038/s41598-026-56334-7). Python 3.12.
+jupyterlab==4.6.0
+matplotlib==3.11.0
+numpy==2.5.0
+pandas==3.0.3
+pyarrow==24.0.0
+pymannkendall==1.4.3
+scikit-learn==1.9.0
+scipy==1.18.0
+seaborn==0.13.2
+statsmodels==0.14.6
+tabulate==0.10.0

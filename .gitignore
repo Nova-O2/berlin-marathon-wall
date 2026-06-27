@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / IDE
+desktop.ini
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large data files (available on Zenodo)
+data/*.csv
+data/*.parquet
+
+# Build artefacts
+manuscript/
+Makefile
+scripts/
+*.docx
+
+# Working folders
+_*/
+bundles/
+*.tmp
+notebooks/results/**/*.parquet
