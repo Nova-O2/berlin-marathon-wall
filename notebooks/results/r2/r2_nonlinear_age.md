@@ -1,0 +1,4 @@
+| comparison                                                                       |   lrt_chi2 |   df |     p_value |   aic_alt |   aic_linear |   delta_aic |
+|:---------------------------------------------------------------------------------|-----------:|-----:|------------:|----------:|-------------:|------------:|
+| quadratic age (2 df) vs linear age (1 df)                                        |    21.2617 |    1 | 4.00649e-06 |    623936 |       623955 |    -19.2617 |
+| natural cubic spline 4 cols (constraints='center', knots=3) vs linear age (1 df) |    57.0151 |    3 | 2.55085e-12 |    623904 |       623955 |    -51.0151 |

@@ -1,0 +1,6 @@
+| step                                       |   n_remaining |   n_excluded_at_step | rule                                                               |
+|:-------------------------------------------|--------------:|---------------------:|:-------------------------------------------------------------------|
+| Raw archive (1999-2025)                    |        880779 |                    0 | Raw extraction from BMW Berlin Marathon archive (1999-2025)        |
+| Physiological + cutoff filter              |        873334 |                 7445 | Net finish time 1:59:00 <= t <= 6:15:00; valid net finish recorded |
+| Pacing-valid (half-marathon split present) |        872670 |                  664 | Both half-marathon and finish time present and parseable           |
+| Logistic-valid (perf_cat + age_mid)        |        855061 |                17609 | Mappable to performance category AND age group present             |
