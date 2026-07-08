@@ -8,7 +8,7 @@
 
 ## In the media
 
-The study drew broad international press coverage on publication (July 2026), appearing in more than 40 outlets across 15+ countries.
+The study drew broad international press coverage on publication (July 2026), appearing in more than 55 outlets across 20 countries and 11 languages.
 
 **Selected coverage**
 
@@ -16,18 +16,19 @@ The study drew broad international press coverage on publication (July 2026), ap
 - **Brazil** — [Superinteressante](https://super.abril.com.br/saude/homens-sao-duas-vezes-mais-propensos-a-quebrar-em-maratonas-entenda-por-que/)
 - **United Kingdom** — [The Times](https://www.thetimes.com/uk/science/article/marathon-runners-men-women-hit-wall-swbsq9627); a live interview on Times Radio; [Daily Mail](https://www.dailymail.com/sciencetech/article-15950405/Male-runners-hit-wall-marathon.html)
 - **Germany** — [Spektrum der Wissenschaft](https://www.spektrum.de/news/ausdauer-warum-maenner-beim-marathon-eher-einbrechen-als-frauen/2331835), [Die Zeit](https://www.zeit.de/news/2026-07/04/maenner-haben-bei-marathons-oefter-ploetzlichen-tempo-einbruch), [Der Tagesspiegel](https://www.tagesspiegel.de/wissen/laufsport-manner-haben-bei-marathons-ofter-plotzlichen-tempo-einbruch-15796412.html), [Handelsblatt](https://www.handelsblatt.com/technik/forschung-innovation/laufsport-maenner-haben-bei-marathons-oefter-ploetzlichen-tempo-einbruch/100237867.html)
-- **Switzerland** — [Le Temps](https://www.letemps.ch/sport/athletisme/l-inegalite-devant-le-mur-du-30e-kilometre-pourquoi-les-marathoniens-se-surestiment-meme-les-plus-aguerris), [watson](https://www.watson.ch/sport/leichtathletik/209470131-studie-zeigt-klar-maenner-brechen-beim-marathon-oefter-ein-als-frauen)
+- **Switzerland** — [Le Temps](https://www.letemps.ch/sport/athletisme/l-inegalite-devant-le-mur-du-30e-kilometre-pourquoi-les-marathoniens-se-surestiment-meme-les-plus-aguerris), [watson](https://www.watson.ch/sport/leichtathletik/209470131-studie-zeigt-klar-maenner-brechen-beim-marathon-oefter-ein-als-frauen), [SRF](https://www.srf.ch/wissen/mensch/laufstudie-zu-geschlechtern-warum-maenner-beim-marathon-haeufiger-an-tempo-verlieren-als-frauen)
 - **Spain** — [La Vanguardia](https://www.lavanguardia.com/ciencia/20260702/11582100/mujeres-sufren-pajaras-hombres-corren-maratones.html) (print front page, Society section)
 - **Italy** — [Galileo](https://www.galileonet.it/tempi-maratona-uomini-donne/), [La ConoScienza](https://www.laconoscienza.it/perche-in-maratona-gli-uomini-rallentano-piu-delle-donne/)
 - **Netherlands** — [Scientias](https://scientias.nl/waarom-lopen-mannen-twee-keer-zo-vaak-tegen-de-muur-bij-een-marathon/)
 - **India** — [ThePrint](https://theprint.in/feature/men-run-faster-women-pacing-effiency-marathons/2976987/)
 - **Australia** — [The Australian](https://www.theaustralian.com.au/health/fitness/men-twice-as-likely-to-hit-marathon-wall-as-women/news-story/e31930ff72998f66f75760add55d111a)
+- **Canada** — [Canadian Running Magazine](https://runningmagazine.ca/sections/training/men-are-far-more-likely-to-hit-the-wall-in-a-marathon-new-study-finds/)
 - **Asia** — [Nature Japan](http://www.natureasia.com/ja-jp/research/highlight/15581) (Japanese research highlight); [Sina Tech](https://finance.sina.com.cn/tech/roll/2026-07-03/doc-inifnnxe5617526.shtml) and [China News Service](https://www.chinanews.com.cn/ty/2026/07-03/10652080.shtml) (China)
 - **Russia** — [N+1](https://nplus1.ru/news/2026/07/02/sex-differences-in-marathon)
 - **Pan-European** — [Euronews](https://www.euronews.com/health/2026/07/04/men-up-to-six-times-as-likely-to-hit-the-wall-during-marathons-study-finds) (English and Portuguese editions)
 - **Running & science media** — [Marathon Handbook](https://marathonhandbook.com/men-hit-the-wall-twice-as-often-as-women-873000-runner-berlin-study-finds/), [Medical Xpress](https://medicalxpress.com/news/2026-07-men-slower-wall-marathons.html)
 
-The findings were also carried via the **dpa** (Germany), **Keystone-SDA** (Switzerland) and **EFE** (Spain and Latin America) news wires, including t-online, WirtschaftsWoche, Rhein-Zeitung, Freie Presse, Heilbronner Stimme, Westdeutsche Zeitung, Neue Westfälische, Werra-Rundschau, Soester Anzeiger, Berliner Abendblatt, Bietigheimer Zeitung and Ludwigsburger Kreiszeitung (Germany); Sarganserländer, Nau.ch, Radio Central, Blick and bluewin (Switzerland); HDsports (Austria); Aragón Radio, ABC Color, Diario de Yucatán and UDG TV (Spain, Paraguay and Mexico); and marathon4you and Scimex, among others.
+The findings were also carried via the **dpa** (Germany), **Keystone-SDA** (Switzerland), **EFE** (Spain and Latin America) and **TT** (Sweden) news wires, including t-online, WirtschaftsWoche, Rhein-Zeitung, Freie Presse, Heilbronner Stimme, Westdeutsche Zeitung, Neue Westfälische, Werra-Rundschau, Soester Anzeiger, Berliner Abendblatt, Bietigheimer Zeitung and Ludwigsburger Kreiszeitung (Germany); Sarganserländer, Nau.ch, Radio Central, Blick and bluewin (Switzerland); HDsports (Austria); Göteborgs-Posten and Skånska Dagbladet (Sweden); Aragón Radio, ABC Color, Diario de Yucatán and UDG TV (Spain, Paraguay and Mexico); and marathon4you and Scimex, among others.
 
 ## Authors
 
