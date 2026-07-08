@@ -23,7 +23,7 @@ The study drew broad international press coverage on publication (July 2026), ap
 - **India** — [ThePrint](https://theprint.in/feature/men-run-faster-women-pacing-effiency-marathons/2976987/)
 - **Australia** — [The Australian](https://www.theaustralian.com.au/health/fitness/men-twice-as-likely-to-hit-marathon-wall-as-women/news-story/e31930ff72998f66f75760add55d111a)
 - **Canada** — [Canadian Running Magazine](https://runningmagazine.ca/sections/training/men-are-far-more-likely-to-hit-the-wall-in-a-marathon-new-study-finds/)
-- **Asia** — [Nature Japan](http://www.natureasia.com/ja-jp/research/highlight/15581) (Japanese research highlight); [Sina Tech](https://finance.sina.com.cn/tech/roll/2026-07-03/doc-inifnnxe5617526.shtml) and [China News Service](https://www.chinanews.com.cn/ty/2026/07-03/10652080.shtml) (China)
+- **Asia** — [Nature Japan](http://www.natureasia.com/ja-jp/research/highlight/15581) (Japanese research highlight); [Sina Tech](https://finance.sina.com.cn/tech/roll/2026-07-03/doc-inifnnxe5617526.shtml), [China News Service](https://www.chinanews.com.cn/ty/2026/07-03/10652080.shtml) and [Science and Technology Daily](https://www.stdaily.com/web/gjxw/2026-07/03/content_541749.html) (China)
 - **Russia** — [N+1](https://nplus1.ru/news/2026/07/02/sex-differences-in-marathon)
 - **Pan-European** — [Euronews](https://www.euronews.com/health/2026/07/04/men-up-to-six-times-as-likely-to-hit-the-wall-during-marathons-study-finds) (English and Portuguese editions)
 - **Running & science media** — [Marathon Handbook](https://marathonhandbook.com/men-hit-the-wall-twice-as-often-as-women-873000-runner-berlin-study-finds/), [Medical Xpress](https://medicalxpress.com/news/2026-07-men-slower-wall-marathons.html)
